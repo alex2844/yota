@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ -e "/etc/init.d/" ]; then
+	echo '#! /bin/sh -e' > /etc/init.d/yota
+	echo 'set -e' >> /etc/init.d/yota
+	echo 'case "$1" in' >> /etc/init.d/yota
+	echo 'start)' >> /etc/init.d/yota
+	echo 'echo "65" > /proc/sys/net/ipv4/ip_default_ttl' >> /etc/init.d/yota
+	echo ';;' >> /etc/init.d/yota
+	echo 'stop)' >> /etc/init.d/yota
+	echo 'echo "64" > /proc/sys/net/ipv4/ip_default_ttl' >> /etc/init.d/yota
+	echo ';;' >> /etc/init.d/yota
+	echo 'status)' >> /etc/init.d/yota
+	echo 'st=`cat /proc/sys/net/ipv4/ip_default_ttl`' >> /etc/init.d/yota
+	echo 'if [ "$st" == "64" ]; then' >> /etc/init.d/yota
+	echo 'echo "$DAEMON is running";' >> /etc/init.d/yota
+	echo 'exit 0;' >> /etc/init.d/yota
+	echo 'else' >> /etc/init.d/yota
+	echo 'echo "$DAEMON is NOT running";' >> /etc/init.d/yota
+	echo 'exit 3;' >> /etc/init.d/yota
+	echo 'fi' >> /etc/init.d/yota
+	echo ';;' >> /etc/init.d/yota
+	echo '*)' >> /etc/init.d/yota
+	echo 'echo "Usage: /etc/init.d/yota {start|stop|status}"' >> /etc/init.d/yota
+	echo 'exit 1' >> /etc/init.d/yota
+	echo ';;' >> /etc/init.d/yota
+	echo 'esac' >> /etc/init.d/yota
+	echo 'exit 0' >> /etc/init.d/yota
+	chmod +x /etc/init.d/yota
+fi
+if [ -e "/system/etc/init.sh" ]; then
+	echo 'echo "65" > /proc/sys/net/ipv4/ip_default_ttl' >> /system/etc/init.sh
+fi
